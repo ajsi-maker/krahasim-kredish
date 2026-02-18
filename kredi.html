@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <title>Krahasim Kredish – MVP</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; margin: 5px 0; width: 100%; }
+    .bank { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<h2>Kalkulator Kredie</h2>
+
+<label>Shuma e kredisë (€)</label>
+<input type="number" id="amount">
+
+<label>Afati (vite)</label>
+<input type="number" id="years">
+
+<button onclick="calculate()">Llogarit</button>
+
+<div id="results"></div>
+
+<script>
+const banks = [
+  { name: "Banka A", interest: 5.5 },
+  { name: "Banka B", interest: 6.2 },
+  { name: "Banka C", interest: 4.9 }
+];
+
+function calculate() {
+  const amount = document.getElementById("amount").value;
+  const years = document.getElementById("years").value;
+  const months = years * 12;
+
+  let output = "";
+
+  banks.forEach(bank => {
+    const monthlyRate = bank.interest / 100 / 12;
+    const monthlyPayment =
+      (amount * monthlyRate) /
+      (1 - Math.pow(1 + monthlyRate, -months));
+
+    const totalCost = monthlyPayment * months;
+
+    output += `
+      <div class="bank">
+        <strong>${bank.name}</strong><br>
+        Interesi: ${bank.interest}%<br>
+        Kësti mujor: €${monthlyPayment.toFixed(2)}<br>
+        Kosto totale: €${totalCost.toFixed(2)}
+      </div>
+    `;
+  });
+
+  document.getElementById("results").innerHTML = output;
+}
+</script>
+
+</body>
+</html>
